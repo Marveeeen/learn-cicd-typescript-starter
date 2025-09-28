@@ -23,3 +23,18 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v3"
+
+      - name: "Use gcloud CLI"
+        run: "gcloud info"
+
+      - name: Deploy and push to Artifact Repository
+        run: |
+          gcloud builds submit --tag asia-southeast1-docker.pkg.dev/notely-473506/notely-ar-repo/notely-473506:latest
